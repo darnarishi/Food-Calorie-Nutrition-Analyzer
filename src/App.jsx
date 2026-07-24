@@ -16,7 +16,7 @@ const DEFAULT_GOALS = {
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '');
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '');
   const [analysisResult, setAnalysisResult] = useState(null);
 
   // Daily target goals
