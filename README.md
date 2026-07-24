@@ -10,7 +10,7 @@ Built with **React (Vite)** and styled using custom **Vanilla CSS** with modern 
 
 ### 1. 📷 Vision AI & Interactive Image Hotspots
 * Drag-and-drop or select any food image to run a local laser scanner animation.
-* The application processes the visual plate and plots absolute-positioned glowing hot-spots (X & Y coordinates) directly over the detected food items (e.g. Avocado vs. Toast) on the image canvas.
+* The application processes the visual plate and plots absolute-positioned glowing hotspots (X & Y coordinates) directly over the detected food items (e.g., Avocado vs. Toast) on the image canvas.
 * Users can tap a hotspot to scale its portion size or remove it from the plate dynamically.
 
 ### 2. 📈 "Caloric Velocity" Digestion Curve Simulator
@@ -30,6 +30,7 @@ Built with **React (Vite)** and styled using custom **Vanilla CSS** with modern 
 ## 🛠️ Technology Stack
 
 * **Frontend Framework:** React 19 (Vite)
+* **Icons:** FontAwesome SVG Icons via `react-icons`
 * **Styling:** Custom CSS Variables & Animations (No Tailwind or external component libraries)
 * **Vision Model:** Google Gemini 1.5 Flash (via `@google/generative-ai`)
 * **Local Storage:** Automated JSON serialization for daily state tracking.
@@ -41,13 +42,23 @@ Built with **React (Vite)** and styled using custom **Vanilla CSS** with modern 
 ### 1. Prerequisites
 Ensure you have [Node.js](https://nodejs.org/) installed (v18+ recommended).
 
-### 2. Install Dependencies
-Clone the repository, navigate into the directory, and run:
+### 2. Clone and Install Dependencies
+Navigate into the directory and install packages:
 ```powershell
 npm install
 ```
 
-### 3. Start Development Server
+### 3. Environment Variables Configuration
+To add your Gemini API Key directly, copy the example environment file:
+```powershell
+cp .env.example .env
+```
+Open the `.env` file and insert your key:
+```env
+VITE_GEMINI_API_KEY=your_actual_gemini_api_key
+```
+
+### 4. Start Development Server
 ```powershell
 npm run dev
 ```
@@ -55,9 +66,9 @@ Open [http://localhost:5173](http://localhost:5173) in your web browser.
 
 ---
 
-## 🔑 Adding your Gemini API Key
-To execute real-time image analysis:
-1. Open the **Settings** panel from the Sidebar inside the app.
+## 🔑 Alternative API Key Setup
+If you don't configure the `.env` file:
+1. Open the **Settings ⚙️** panel from the Sidebar inside the application.
 2. Paste your Google Gemini API Key.
-3. Save. The key is securely saved only in your local browser storage (`localStorage`).
-*If no API key is specified, the application defaults to **Demo Mode**, letting you click any of the preloaded plates to experience the visual hotspots and absorption graphs instantly.*
+3. Save. The key is securely saved locally in your browser storage (`localStorage`).
+*If no API key is specified in either `.env` or settings, the application defaults to **Demo Mode**, letting you click any of the preloaded plates to experience the visual hotspots and absorption graphs instantly.*
