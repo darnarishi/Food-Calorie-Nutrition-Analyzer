@@ -1,16 +1,63 @@
-# React + Vite
+# NutriScan AI — Calorie & Nutrition Vision Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+NutriScan AI is a premium, state-of-the-art React web application designed to identify food items from images, estimate calorie/nutritional profiles, and track daily eating habits. 
 
-Currently, two official plugins are available:
+Built with **React (Vite)** and styled using custom **Vanilla CSS** with modern dark-theme glassmorphism aesthetics, it integrates directly with the **Google Gemini 1.5 Flash Vision API** for instant meal parsing.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features & Software Engineering Highlights
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. 📷 Vision AI & Interactive Image Hotspots
+* Drag-and-drop or select any food image to run a local laser scanner animation.
+* The application processes the visual plate and plots absolute-positioned glowing hot-spots (X & Y coordinates) directly over the detected food items (e.g. Avocado vs. Toast) on the image canvas.
+* Users can tap a hotspot to scale its portion size or remove it from the plate dynamically.
 
-## Expanding the Oxlint configuration
+### 2. 📈 "Caloric Velocity" Digestion Curve Simulator
+* Plots a dynamic SVG bezier spline showing a simulated 4-hour blood glucose & energy absorption window.
+* A custom mathematical engine calculates the curve based on the meal's glycemic profile (simple carbohydrates vs. complex grains, fats, and high-fiber proteins).
+  * **Spikes/Crashes:** Projected for meals dominated by high glycemic simple carbs.
+  * **Steady Release:** Projected for plates high in fiber, fats, and proteins.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### 3. 📊 Interactive Dashboard & 7-Day Analytics
+* Dynamic circular SVG calorie target progress rings.
+* Customized neon-gradient progress bars indicating daily targets for Protein, Carbohydrates, and Fats.
+* Historical SVG line graph showing calorie consumption patterns over the last 7 days.
+* Client-side persistence using browser `localStorage`.
+
+---
+
+## 🛠️ Technology Stack
+
+* **Frontend Framework:** React 19 (Vite)
+* **Styling:** Custom CSS Variables & Animations (No Tailwind or external component libraries)
+* **Vision Model:** Google Gemini 1.5 Flash (via `@google/generative-ai`)
+* **Local Storage:** Automated JSON serialization for daily state tracking.
+
+---
+
+## 🚀 Local Installation & Setup
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed (v18+ recommended).
+
+### 2. Install Dependencies
+Clone the repository, navigate into the directory, and run:
+```powershell
+npm install
+```
+
+### 3. Start Development Server
+```powershell
+npm run dev
+```
+Open [http://localhost:5173](http://localhost:5173) in your web browser.
+
+---
+
+## 🔑 Adding your Gemini API Key
+To execute real-time image analysis:
+1. Open the **Settings** panel from the Sidebar inside the app.
+2. Paste your Google Gemini API Key.
+3. Save. The key is securely saved only in your local browser storage (`localStorage`).
+*If no API key is specified, the application defaults to **Demo Mode**, letting you click any of the preloaded plates to experience the visual hotspots and absorption graphs instantly.*
