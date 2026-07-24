@@ -59,7 +59,7 @@ export default function VisionScanner({ onAnalysisComplete }) {
   const triggerAnalysis = async (file) => {
     setIsAnalyzing(true);
     try {
-      const result = await analyzeFoodImage(file, apiKey);
+      const result = await analyzeFoodImage(file);
       setIsAnalyzing(false);
       onAnalysisComplete({
         ...result,
