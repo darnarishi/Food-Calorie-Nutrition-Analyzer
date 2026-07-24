@@ -202,7 +202,7 @@ export async function analyzeFoodImage(imageFile, apiKey) {
     const genAI = new GoogleGenerativeAI(apiKey);
     // Use gemini-1.5-flash as the standard vision and analysis model
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-flash-latest',
       generationConfig: {
         responseMimeType: 'application/json'
       }
