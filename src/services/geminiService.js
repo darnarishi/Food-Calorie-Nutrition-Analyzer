@@ -182,70 +182,107 @@ async function fileToGenerativePart(file) {
 }
 
 /**
+ * Helper to convert file data to base64 string.
+ */
+async function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = (error) => reject(error);
+  });
+}
+
+/**
  * Sends the image to the Gemini Vision API to analyze food.
  * @param {File} imageFile - The food image selected by the user.
  * @param {string} apiKey - The user's custom Google Gemini API Key.
  * @returns {Promise<Object>} The parsed nutrition analysis response.
  */
 export async function analyzeFoodImage(imageFile, apiKey) {
-  // If no API key is specified, we fall back to a random mock plate to demonstrate functionality.
-  if (!apiKey) {
-    await new Promise((r) => setTimeout(r, 2000)); // Simulate network latency
-    const randomPlate = MOCK_PLATES[Math.floor(Math.random() * MOCK_PLATES.length)];
-    return {
-      ...randomPlate,
-      isDemoMode: true
-    };
+  // 1. If the user provided a custom key in UI Settings, run analysis client-side
+  if (apiKey) {
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({
+        model: 'gemini-flash-latest',
+        generationConfig: {
+          responseMimeType: 'application/json'
+        }
+      });
+
+      const imagePart = await fileToGenerativePart(imageFile);
+      
+      const prompt = `
+        Analyze this food image. Identify all individual food components visible on the plate/meal.
+        For each item you detect:
+        1. Provide a name.
+        2. Estimate its calories, protein, carbs, and fat contents.
+        3. Categorize its Glycemic Index as "low", "medium", or "high".
+        4. Estimate the exact center coordinates {x, y} of the food item in the image as percentages from 0 to 100.
+           (x is from left to right, y is from top to bottom. Help place UI markers on the plate).
+        5. Provide an estimated baseWeightGrams for the typical portion seen.
+
+        Also provide 2-3 tailored dietary health tips based on the meal combination.
+        
+        Respond STRICTLY in the following JSON format:
+        {
+          "detectedItems": [
+            {
+              "foodName": "Item Name",
+              "calories": 150,
+              "protein": 5,
+              "carbs": 20,
+              "fat": 4,
+              "glycemicIndex": "low",
+              "coordinates": { "x": 45, "y": 60 },
+              "baseWeightGrams": 120
+            }
+          ],
+          "healthTips": [
+            "Tip 1...",
+            "Tip 2..."
+          ]
+        }
+      `;
+
+      const result = await model.generateContent([prompt, imagePart]);
+      const text = result.response.text();
+      const parsedData = JSON.parse(text);
+
+      return {
+        name: parsedData.detectedItems.map(item => item.foodName).join(' & '),
+        detectedItems: parsedData.detectedItems,
+        healthTips: parsedData.healthTips || [],
+        isDemoMode: false
+      };
+    } catch (error) {
+      console.warn('Client-side Gemini Vision analysis failed, trying backend proxy:', error);
+    }
   }
 
+  // 2. Otherwise (or if client call failed), call our secure serverless backend proxy
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    // Use gemini-1.5-flash as the standard vision and analysis model
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-flash-latest',
-      generationConfig: {
-        responseMimeType: 'application/json'
-      }
+    const base64Data = await fileToBase64(imageFile);
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        image: base64Data,
+        mimeType: imageFile.type
+      })
     });
 
-    const imagePart = await fileToGenerativePart(imageFile);
-    
-    const prompt = `
-      Analyze this food image. Identify all individual food components visible on the plate/meal.
-      For each item you detect:
-      1. Provide a name.
-      2. Estimate its calories, protein, carbs, and fat contents.
-      3. Categorize its Glycemic Index as "low", "medium", or "high".
-      4. Estimate the exact center coordinates {x, y} of the food item in the image as percentages from 0 to 100.
-         (x is from left to right, y is from top to bottom. Help place UI markers on the plate).
-      5. Provide an estimated baseWeightGrams for the typical portion seen.
+    if (!response.ok) {
+      throw new Error(`Server API returned status code ${response.status}`);
+    }
 
-      Also provide 2-3 tailored dietary health tips based on the meal combination.
-      
-      Respond STRICTLY in the following JSON format:
-      {
-        "detectedItems": [
-          {
-            "foodName": "Item Name",
-            "calories": 150,
-            "protein": 5,
-            "carbs": 20,
-            "fat": 4,
-            "glycemicIndex": "low",
-            "coordinates": { "x": 45, "y": 60 },
-            "baseWeightGrams": 120
-          }
-        ],
-        "healthTips": [
-          "Tip 1...",
-          "Tip 2..."
-        ]
-      }
-    `;
-
-    const result = await model.generateContent([prompt, imagePart]);
-    const text = result.response.text();
-    const parsedData = JSON.parse(text);
+    const parsedData = await response.json();
+    if (parsedData.error) {
+      throw new Error(parsedData.error);
+    }
 
     return {
       name: parsedData.detectedItems.map(item => item.foodName).join(' & '),
@@ -254,9 +291,10 @@ export async function analyzeFoodImage(imageFile, apiKey) {
       isDemoMode: false
     };
   } catch (error) {
-    console.error('Gemini Vision analysis failed, falling back to Mock:', error);
-    // Graceful fallback to demo data if the API key is incorrect or quota is hit
-    const randomPlate = MOCK_PLATES[0];
+    console.error('API backend proxy analysis failed, falling back to Demo Mode:', error.message);
+    
+    // 3. Fallback to Demo Mode random mock plate
+    const randomPlate = MOCK_PLATES[Math.floor(Math.random() * MOCK_PLATES.length)];
     return {
       ...randomPlate,
       isDemoMode: true,
