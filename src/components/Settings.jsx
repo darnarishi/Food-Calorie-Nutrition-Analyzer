@@ -5,9 +5,7 @@ import { FaTimes } from 'react-icons/fa';
  * Settings Panel Modal. 
  * Allows setting a custom Gemini API Key and editing daily target goals.
  */
-export default function Settings({ goals, apiKey, onSave, onClose }) {
-  const [key, setKey] = useState(apiKey || '');
-  const [showKey, setShowKey] = useState(false);
+export default function Settings({ goals, onSave, onClose }) {
   const [calories, setCalories] = useState(goals.calories || 2000);
   const [protein, setProtein] = useState(goals.protein || 150);
   const [carbs, setCarbs] = useState(goals.carbs || 200);
@@ -16,13 +14,10 @@ export default function Settings({ goals, apiKey, onSave, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave({
-      apiKey: key,
-      goals: {
-        calories: parseInt(calories) || 2000,
-        protein: parseInt(protein) || 150,
-        carbs: parseInt(carbs) || 200,
-        fat: parseInt(fat) || 70
-      }
+      calories: parseInt(calories) || 2000,
+      protein: parseInt(protein) || 150,
+      carbs: parseInt(carbs) || 200,
+      fat: parseInt(fat) || 70
     });
   };
 
@@ -37,31 +32,6 @@ export default function Settings({ goals, apiKey, onSave, onClose }) {
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* Gemini API Key input block */}
-          <div className="form-group">
-            <label className="form-label">Gemini API Key</label>
-            <div style={{ position: 'relative', display: 'flex', gap: '0.5rem' }}>
-              <input
-                type={showKey ? 'text' : 'password'}
-                className="form-input"
-                style={{ flexGrow: 1 }}
-                placeholder="Enter AI API Key..."
-                value={key}
-                onChange={(e) => setKey(e.target.value)}
-              />
-              <button
-                type="button"
-                className="btn-secondary"
-                style={{ padding: '0.85rem' }}
-                onClick={() => setShowKey(!showKey)}
-              >
-                {showKey ? 'Hide' : 'Show'}
-              </button>
-            </div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
-              Your key is saved locally in your browser. Leave empty to use Demo Mode.
-            </p>
-          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.5rem' }}>
             {/* Daily target settings */}

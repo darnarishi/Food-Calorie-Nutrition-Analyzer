@@ -17,7 +17,6 @@ const DEFAULT_GOALS = {
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('gemini_api_key') || '');
   const [analysisResult, setAnalysisResult] = useState(null);
 
   // Daily target goals
@@ -43,9 +42,7 @@ export default function App() {
   }, [loggedMeals]);
 
   // Save Settings panel configuration
-  const handleSaveSettings = ({ apiKey: newKey, goals: newGoals }) => {
-    setApiKey(newKey);
-    localStorage.setItem('gemini_api_key', newKey);
+  const handleSaveSettings = (newGoals) => {
     setGoals(newGoals);
     setIsSettingsOpen(false);
   };
@@ -121,7 +118,6 @@ export default function App() {
         {isSettingsOpen && (
           <Settings
             goals={goals}
-            apiKey={apiKey}
             onSave={handleSaveSettings}
             onClose={() => setIsSettingsOpen(false)}
           />
@@ -146,7 +142,6 @@ export default function App() {
               <div className="scanner-container">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   <VisionScanner
-                    apiKey={apiKey}
                     onAnalysisComplete={(res) => setAnalysisResult(res)}
                   />
                   {/* Small card to reset analysis */}
@@ -172,7 +167,6 @@ export default function App() {
             ) : (
               <div style={{ maxWidth: '650px', margin: '0 auto' }}>
                 <VisionScanner
-                  apiKey={apiKey}
                   onAnalysisComplete={(res) => setAnalysisResult(res)}
                 />
               </div>

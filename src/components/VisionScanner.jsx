@@ -9,7 +9,7 @@ const DEMO_GRADIENTS = {
   'smoothie-bowl': 'linear-gradient(135deg, #ef32d9, #89fffd)'
 };
 
-export default function VisionScanner({ apiKey, onAnalysisComplete }) {
+export default function VisionScanner({ onAnalysisComplete }) {
   const [imageSrc, setImageSrc] = useState(null);
   const [selectedDemoId, setSelectedDemoId] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -79,23 +79,6 @@ export default function VisionScanner({ apiKey, onAnalysisComplete }) {
         Snap or upload a photo of your food plate. Gemini Vision will analyze and tag each ingredient.
       </p>
 
-      {!apiKey && (
-        <div style={{
-          background: 'rgba(14, 165, 233, 0.07)',
-          border: '1px dashed rgba(14, 165, 233, 0.25)',
-          borderRadius: '14px',
-          padding: '0.85rem 1rem',
-          fontSize: '0.8rem',
-          color: 'var(--sky)',
-          marginBottom: '1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          lineHeight: 1.4
-        }}>
-          <FaInfoCircle style={{ marginRight: '0.4rem', flexShrink: 0, fontSize: '1rem' }} /> Running in Demo Mode. To analyze custom food images, add your Gemini API Key in the Settings panel (bottom left of the sidebar).
-        </div>
-      )}
 
       {/* Main Upload / Scanning Panel */}
       <div style={{ display: 'grid', gridTemplateColumns: imageSrc || selectedDemoId ? '1fr' : '1fr', gap: '2rem' }}>
