@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaTrash, FaUtensils } from 'react-icons/fa';
 
 /**
  * HistoryLog Component
@@ -172,7 +173,9 @@ export default function HistoryLog({ loggedMeals = [], goals, onDeleteMeal }) {
                   {meal.imageUrl ? (
                     <img src={meal.imageUrl} alt={meal.name} className="history-card-img" />
                   ) : (
-                    <div className="brand-logo" style={{ borderRadius: '10px', width: '48px', height: '48px' }}>🥗</div>
+                    <div className="brand-logo" style={{ borderRadius: '10px', width: '48px', height: '48px', fontSize: '1.2rem' }}>
+                      <FaUtensils />
+                    </div>
                   )}
                   <div className="history-card-info">
                     <h4>{meal.name}</h4>
@@ -200,15 +203,19 @@ export default function HistoryLog({ loggedMeals = [], goals, onDeleteMeal }) {
                       border: 'none',
                       color: 'var(--rose)',
                       cursor: 'pointer',
-                      fontSize: '1.1rem',
+                      fontSize: '0.95rem',
                       opacity: 0.7,
-                      transition: 'opacity 0.2s'
+                      transition: 'opacity 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '0.5rem'
                     }}
-                    onMouseEnter={(e) => (e.target.style.opacity = 1)}
-                    onMouseLeave={(e) => (e.target.style.opacity = 0.7)}
+                    onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
+                    onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.7)}
                     title="Delete log"
                   >
-                    ✕
+                    <FaTrash />
                   </button>
                 </div>
               </div>

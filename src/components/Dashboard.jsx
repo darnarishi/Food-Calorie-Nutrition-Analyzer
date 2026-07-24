@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaCamera, FaUtensils } from 'react-icons/fa';
 
 /**
  * Dashboard Component
@@ -126,10 +127,10 @@ export default function Dashboard({ loggedMeals = [], goals, setActiveTab }) {
             <p>No meals logged today yet.</p>
             <button
               className="btn-primary"
-              style={{ marginTop: '1rem', fontSize: '0.9rem' }}
+              style={{ marginTop: '1rem', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
               onClick={() => setActiveTab('scanner')}
             >
-              Analyze a Plate
+              <FaCamera /> Analyze a Plate
             </button>
           </div>
         ) : (
@@ -140,7 +141,9 @@ export default function Dashboard({ loggedMeals = [], goals, setActiveTab }) {
                   {meal.imageUrl ? (
                     <img src={meal.imageUrl} alt={meal.name} className="history-card-img" />
                   ) : (
-                    <div className="brand-logo" style={{ borderRadius: '10px', width: '48px', height: '48px' }}>🥗</div>
+                    <div className="brand-logo" style={{ borderRadius: '10px', width: '48px', height: '48px', fontSize: '1.2rem' }}>
+                      <FaUtensils />
+                    </div>
                   )}
                   <div className="history-card-info">
                     <h4>{meal.name}</h4>

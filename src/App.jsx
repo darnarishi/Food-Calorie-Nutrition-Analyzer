@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaChartBar, FaCamera, FaHistory, FaCog, FaHeartbeat } from 'react-icons/fa';
 import Dashboard from './components/Dashboard';
 import VisionScanner from './components/VisionScanner';
 import NutritionPanel from './components/NutritionPanel';
@@ -72,7 +73,9 @@ export default function App() {
       <aside className="sidebar">
         <div>
           <div className="brand-section">
-            <div className="brand-logo">N</div>
+            <div className="brand-logo">
+              <FaHeartbeat />
+            </div>
             <h1 className="brand-name">NutriScan AI</h1>
           </div>
 
@@ -80,20 +83,23 @@ export default function App() {
             <li
               className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
               onClick={() => setActiveTab('dashboard')}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
             >
-              📊 Dashboard
+              <FaChartBar /> Dashboard
             </li>
             <li
               className={`nav-item ${activeTab === 'scanner' ? 'active' : ''}`}
               onClick={() => setActiveTab('scanner')}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
             >
-              📷 Scan Food
+              <FaCamera /> Scan Food
             </li>
             <li
               className={`nav-item ${activeTab === 'history' ? 'active' : ''}`}
               onClick={() => setActiveTab('history')}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}
             >
-              📅 Log History
+              <FaHistory /> Log History
             </li>
           </nav>
         </div>
@@ -101,10 +107,10 @@ export default function App() {
         <div className="sidebar-footer">
           <button
             className="btn-secondary"
-            style={{ width: '100%', justifyContent: 'center' }}
+            style={{ width: '100%', justifyContent: 'center', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             onClick={() => setIsSettingsOpen(true)}
           >
-            ⚙️ Settings
+            <FaCog /> Settings
           </button>
         </div>
       </aside>

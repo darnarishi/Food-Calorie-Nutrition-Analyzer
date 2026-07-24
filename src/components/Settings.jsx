@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaTimes } from 'react-icons/fa';
 
 /**
  * Settings Panel Modal. 
@@ -30,8 +31,8 @@ export default function Settings({ goals, apiKey, onSave, onClose }) {
       <div className="modal-content glass-panel" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', alignItems: 'center' }}>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Profile & Target Settings</h2>
-          <button className="btn-secondary" style={{ padding: '0.4rem 0.8rem', borderRadius: '10px' }} onClick={onClose}>
-            ✕
+          <button className="btn-secondary" style={{ padding: '0.4rem 0.8rem', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={onClose}>
+            <FaTimes />
           </button>
         </div>
 

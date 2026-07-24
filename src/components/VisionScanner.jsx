@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { FaCamera, FaUtensils, FaInfoCircle } from 'react-icons/fa';
 import { analyzeFoodImage, MOCK_PLATES } from '../services/geminiService';
 
 // Organic CSS background gradients to serve as elegant placeholders for the demo meals
@@ -92,7 +93,7 @@ export default function VisionScanner({ apiKey, onAnalysisComplete }) {
           gap: '0.5rem',
           lineHeight: 1.4
         }}>
-          💡 Running in Demo Mode. To analyze custom food images, add your Gemini API Key in the Settings panel (bottom left of the sidebar).
+          <FaInfoCircle style={{ marginRight: '0.4rem', flexShrink: 0, fontSize: '1rem' }} /> Running in Demo Mode. To analyze custom food images, add your Gemini API Key in the Settings panel (bottom left of the sidebar).
         </div>
       )}
 
@@ -109,7 +110,9 @@ export default function VisionScanner({ apiKey, onAnalysisComplete }) {
               accept="image/*"
               style={{ display: 'none' }}
             />
-            <div className="upload-icon">📷</div>
+            <div className="upload-icon">
+              <FaCamera />
+            </div>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontWeight: 600, fontSize: '1.05rem', marginBottom: '0.25rem' }}>
                 Drag & Drop or Tap to Browse
@@ -138,11 +141,12 @@ export default function VisionScanner({ apiKey, onAnalysisComplete }) {
                   background: DEMO_GRADIENTS[selectedDemoId],
                   display: 'flex',
                   alignItems: 'center',
-                  justify: 'center',
-                  fontSize: '4rem'
+                  justifyContent: 'center',
+                  fontSize: '4rem',
+                  color: 'rgba(255, 255, 255, 0.3)'
                 }}
               >
-                🥗
+                <FaUtensils />
               </div>
             )}
 
@@ -208,10 +212,11 @@ export default function VisionScanner({ apiKey, onAnalysisComplete }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '2rem'
+                    fontSize: '2rem',
+                    color: 'rgba(255, 255, 255, 0.4)'
                   }}
                 >
-                  🥗
+                  <FaUtensils />
                 </div>
                 <h4 style={{ fontSize: '0.9rem', fontWeight: 700, lineHeight: 1.2 }}>{plate.name}</h4>
                 <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>

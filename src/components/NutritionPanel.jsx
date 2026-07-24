@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaLightbulb } from 'react-icons/fa';
 import DigestionSimulator from './DigestionSimulator';
 
 export default function NutritionPanel({ analysisResult, onSaveMeal }) {
@@ -191,7 +192,7 @@ export default function NutritionPanel({ analysisResult, onSaveMeal }) {
       {healthTips.length > 0 && (
         <div className="glass-panel">
           <h4 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            💡 AI Dietary Insights
+            <FaLightbulb style={{ color: 'var(--amber)' }} /> AI Dietary Insights
           </h4>
           <ul style={{ listStyleType: 'none', paddingLeft: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {healthTips.map((tip, idx) => (
